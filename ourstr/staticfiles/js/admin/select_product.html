@@ -1,0 +1,48 @@
+<!-- document.addEventListener('DOMContentLoaded', function() {
+    const productTable = document.getElementById('product-table');
+    const addProductBtn = document.getElementById('add-product-btn');
+    const selectedProducts = [];
+  
+    addProductBtn.addEventListener('click', function() {
+      const selectedRows = productTable.rows;
+      for (let i = 1; i < selectedRows.length; i++) {
+        const row = selectedRows[i];
+        const checkbox = row.cells[0].querySelector('input[type="checkbox"]');
+        if (checkbox.checked) {
+          selectedProducts.push({
+            id: checkbox.value,
+            name: row.cells[1].textContent,
+            quantity: row.cells[2].textContent
+          });
+        }
+      }
+      // Add selected products to sale form
+      const saleForm = document.querySelector('form');
+      selectedProducts.forEach((product) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'product';
+        input.value = (Product.id);
+        saleForm.appendChild(input);
+      });
+    });
+  
+    // Update product quantity on billing
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const saleData = new FormData(this);
+      fetch('{% url 'update_product_quantity'(Product.id) %}', {
+        method: 'POST',
+        body: saleData
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          window.location.href = data.redirect_url;
+        } else {
+          alert('Error updating product quantity');
+        }
+      });
+    });
+  });
+   -->

@@ -1,0 +1,110 @@
+<!-- templates/booking/booking_page.html -->
+{% comment %} {% extends 'adm/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Cart</h1>
+    {% if bookings %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.product.name }}</td>
+                        <td>₹{{ booking.product.price|floatformat:2 }}</td>
+                        <td>{{ booking.quantity }}</td>
+                        <td>₹{{ booking.product.price|multiply:booking.quantity|floatformat:2 }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'remove_from_cart' booking.id %}">
+                                {% csrf_token %}
+                                <button type="submit"><i class="fas fa-trash-alt"></i> Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Total Price: ₹{{ total_price|floatformat:2 }}</h3>
+        <form method="POST" action="{% url 'confirm_order' booking.id %}">
+            {% csrf_token %}
+            <button type="submit" class="confirm-button">Confirm Order</button>
+        </form>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %} {% endcomment %}
+
+
+{% comment %} 
+{% extends 'adm/base.html' %}
+
+{% load custom_filters %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Bookings</h1>
+    {% if bookings %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Confirm</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.product.name }}</td>
+                        <td>₹{{ booking.product.price|floatformat:2 }}</td>
+                        <td>{{ booking.quantity }}</td>
+                        <td>₹{{ booking.total_price|floatformat:2 }}</td>
+                        <td>
+                            <button type="button" onclick="confirmOrder({{ booking.id }})">Confirm Order</button>
+                        </td>               
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Total Price: ₹{{ total_price|floatformat:2 }}</h3>
+    {% else %}
+        <p>You have no bookings yet.</p>
+    {% endif %}
+</div>
+
+<script>
+    function confirmOrder(bookingId) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch(`/booking/confirm_order/${bookingId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                location.reload();  // Reload the page to reflect changes
+            } else {
+                alert('Failed to confirm order: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+{% endblock %} {% endcomment %}

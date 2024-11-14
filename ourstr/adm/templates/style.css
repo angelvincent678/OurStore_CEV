@@ -1,0 +1,67 @@
+
+*{
+    text-decoration: none;
+}
+   .navbar
+   {
+       background: crimson; font-family: calibri; padding-right: 15px;padding-left: 15px;
+   } 
+   .navdiv
+   {
+       display: flex; align-items: center; justify-content: space-between;
+   }
+   .logo a
+   { 
+       font-size: 35px; font-weight: 600; color: white;
+    } 
+    li
+    {
+        list-style: none; display: inline-block; 
+   } 
+   
+   li:hover{
+       background-color:gray;
+       border-radius:10px;
+       border: 1px solid rgb(212, 213, 210);
+   }
+   li a
+   {
+        color: white; font-size: 18px; font-weight: bold; margin-right: 25px;
+    }
+   button
+   {
+        background-color: black; margin-left: 10px; border-radius: 10px; padding: 10px; width: 90px; 
+       } 
+   button a
+   {
+        color: white; font-weight: bold; font-size: 15px;
+    } 
+
+
+    .main-header{
+        width:75%;
+        margin: auto;
+        height: 80vh;
+        display:flex ;
+        align-items: center;
+        justify-content: space-around;
+
+    }
+
+    .main-header h2{
+        font-size: 22px;
+        color:crimson ;
+        font-weight:550;
+    }
+
+    .main-header h5{
+        font-size: 48px;
+        width: 340px;
+        margin-top: 10px;
+        margin-bottom: 24px;
+    }
+   
+    .main-header p{
+        margin-bottom: 60px;
+    }
+  

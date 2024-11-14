@@ -1,0 +1,27 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+  <h1>Sale Creation</h1>
+  <table id="product-table">
+    <thead>
+      <tr>
+        <th>Select Item</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td><input type="checkbox" name="select_product" value="{{ (link unavailable) }}"></td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.quantity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button id="add-product-btn">Add Selected Products</button>
+  <hr>
+  {{ form.as_p }}
+  <button type="submit">Billing</button>
+{% endblock %}

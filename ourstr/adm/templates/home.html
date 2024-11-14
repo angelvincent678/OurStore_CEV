@@ -1,0 +1,323 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>home</title>
+<link rel="stylesheet" href=" {%static '/css/styl.css'%}"> 
+
+<!--font awesome ch-->
+<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+<script src="https://unpkg.com/scrollreveal"></script>
+{% comment %} <script>
+   body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color:#fff3e6;/*  Light peach background */ 
+   }
+  
+</script> {% endcomment %}
+
+
+<script src="https://unpkg.com/scrollreveal"></script>
+
+
+</head>
+ <body>
+   <style>
+      body {
+    
+         background-color:#fff3e6;/*  Light peach background */ 
+     }
+     .contact-container {
+      position: relative; /* Position for the pseudo-element */
+      text-align: center;
+      padding: 40px;
+      background: #fff3e6; /* Solid background for the base */
+      max-width: 800px;  /* Limits the width */
+      margin: 40px auto; /* Centers the container */
+      border-radius: 15px; /* More rounded corners */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 20px 40px rgba(0, 0, 0, 0.1); /* Deep shadows */
+      transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+  }
+  
+  .contact-container:hover {
+      transform: translateY(-5px); /* Lift effect on hover */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 25px 50px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  
+  /* Shine effect */
+  .contact-container:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)); /* Shine effect */
+      border-radius: 15px; /* Match the container's border radius */
+      z-index: 1; /* Place behind the content */
+      pointer-events: none; /* Prevent interaction */
+  }
+  
+  .contact-container h2,
+  .contact-container p {
+      position: relative; /* Ensure text is above the shine */
+      z-index: 2; /* Bring text above the shine effect */
+      margin: 0; /* Reset margin for consistency */
+  }
+
+
+
+
+
+
+
+
+  
+   </style>
+
+   <header>
+     <nav class="navbar"> 
+        <div class="navdiv">
+             <div class="logo"><a href="#">Our Store</a> 
+        </div>
+         <ul> 
+            <li><a href="#home">Home</a></i></li> 
+            <li><a href="#about">About</a></li>
+            <li><a href="#contactus">Contact</a></li>
+            <button><a href="login">Login</a></button> 
+         </ul> 
+       </div> 
+       </nav>
+
+      <div class="main-header">
+         <div class="header">
+
+            <h2>Welcome to CEV's Store</h2>
+            <h5 class="main-head">
+               COLLEGE OF ENGINEERING<br>
+               <span class="sub-head">VADAKARA</span>
+           </h5>
+           <style>
+            .main-header .main-head {
+                font-size: 43px;
+                width: auto; /* Use auto for full width */
+                margin-top: 10px;
+                margin: auto;
+                margin-bottom: 24px;
+                text-align: center; /* Centers the text */
+            }
+        
+            .main-header .sub-head { /* Corrected class name from 'sub-header' to 'sub-head' */
+                display: block; /* Ensures it appears on a new line */
+                font-size: 43px; /* Adjust size if needed */
+                margin-top: 5px; /* Add spacing between the lines */
+            }
+        </style>         
+            <p> Your one-stop hub for all things campus,
+            where every purchase fuels your journey and
+                sparks your spirit!</p>
+         </div>
+         <img src="{%static '/image/1728019160891.jpg'%}" alt="">
+      </div>
+   </header>
+
+
+
+
+   <!---about selection-->
+   <selection id="about">
+      <div class="set-row">
+         <img src="{%static '/image/hero-img.png'%}" alt="">
+
+         <div class="about-content">
+            <h2>About our college store</h2>
+            <p>
+               Welcome to CEV, your one-stop shop for everything you need to thrive during your college experience! Located right on campus,
+                we’re dedicated to providing students with high-quality products, 
+                essential supplies, and spirited merchandise that embodies the heart of our university.
+               Our mission is to support your academic journey and enhance your campus life. 
+               Whether you’re looking for textbooks, study materials, or the latest school apparel, 
+               we’ve got you covered. We pride ourselves on our friendly service, knowledgeable staff, 
+               and a curated selection of items that cater to the diverse needs of our student community.
+            </p>
+            <p>
+               Join us in celebrating your college experience.
+                We’re here to help you succeed and make the most of your time at CEV!
+            </p>
+            <a href="https://www.cev.ac.in/en/" class="btn"> Read more</a>
+         </div>
+         
+            
+         </div>
+      </selection>
+
+      <!--contact-->
+
+      {% comment %} <selection id="contactus">
+         <div class="contact-row">
+            <div class="col">
+               <h2>Contact us</h2>
+               <form action="">
+                  <input type="text" placeholder="Name">
+                  <br>
+                  <input type="email" placeholder="Email">
+                  <br>
+                  <input type="Number" placeholder="Phone Number">
+                  <br>
+                  <textarea cols="20" rows="5" placeholder="Message"></textarea>
+                  <input type="submit" value="SEND">
+                  <br>
+               <form>
+            </div>
+            <div class="col">
+               <img src="{%static '/image/1728019304374.jpg'%}" alt="">
+            </div>
+         </div>
+      </selection> {% endcomment %}
+
+
+
+
+      <selection id="contactus">
+    <title>Contact Form</title>
+   
+    <script defer src="validation.js"></script> <!-- Link to the JS file -->
+</head>
+<body>
+  <style>
+          .contact-container {
+            margin-bottom:4cm;
+            margin-top: 4cm;
+          }
+        </style>
+   
+    <div class="contact-container">
+        <h2>Contact</h2>
+        <p>College of Engineering Vadakara.</p>
+
+        <div class="contact-details">
+            <div class="detail-box">
+                <i class="fas fa-map-marker-alt"></i>
+                <h4>Address</h4>
+                <p>Collage_store,CEV,Vadakara,kozhikod-dis</p>
+            </div>
+            <div class="detail-box">
+                <i class="fas fa-phone"></i>
+                <h4>Call Us</h4>
+                <p>+1 5589 55488 55</p>
+            </div>
+            <div class="detail-box">
+                <i class="fas fa-envelope"></i>
+                <h4>Email Us</h4>
+                <p>OurStore@gmail.com</p>
+            </div>
+        </div>
+
+        
+
+        {% comment %} <form action="" method="POST" class="contact-form">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="subject" placeholder="department" required>
+            </div>
+            <div class="form-group">
+                <textarea id="message" cols="30" rows="5" placeholder="Message" required></textarea>
+            </div>
+            <input type="submit" value="Send Message">
+        </form>
+    </div> {% endcomment %}
+</body>
+</html>
+
+
+
+      <div class="footer">
+         <div class="footer">
+            <p>@2024 All Rights Reservrd by OurStore</p>
+            <script>
+            </selection>
+         
+            document.addEventListener('DOMContentLoaded', function() {
+               ScrollReveal({
+                   reset: true,
+                   distance: '60px',
+                   duration: 1500,
+                   delay: 100
+               });
+           
+               ScrollReveal().reveal('.main-header h2, .about-content h2, .set-row .contact-row h2', { delay: 400, origin: 'top' });
+               ScrollReveal().reveal('.main-header h5, .contact-row .col img', { delay: 400, origin: 'right' });
+               ScrollReveal().reveal('.main-header img, .set-row img, .set-row .about-content .btn', { delay: 700, origin: 'bottom' });
+               ScrollReveal().reveal('.main-header p, .contact-row', { delay: 700, origin: 'bottom' });
+           });
+         </script>
+           
+            
+           <!--- {%block content%}{%endblock %} -->
+ </body>
+</html>
+
+
+
+
+
+
+
+
+               <!-- Contact Section -
+    <section id="contact" class="contact section">
+
+      <!-- Section Title --
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title --
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+              <i class="bi bi-geo-alt"></i>
+              <h3>Address</h3>
+              <p>A108 Adam Street, New York, NY 535022</p>
+            </div>
+          </div>  <!-- End Info Item --
+
+          <div class="col-lg-3 col-md-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-telephone"></i>
+              <h3>Call Us</h3>
+              <p>+1 5589 55488 55</p>
+            </div>
+          </div>  <!-- End Info Item -
+
+          <div class="col-lg-3 col-md-6">
+            <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-envelope"></i>
+              <h3>Email Us</h3>
+              <p>info@example.com</p>
+            </div>
+
+ 
+          </div> -- End Info Item -->
+
+
+    
+
+
+     
+
+

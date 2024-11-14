@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h2>Navbar</h2>
+        <div class="breadcrumb">Home / Checkout</div>
+    </div>
+   
+    <div class="checkout-container">
+        <div class="basic-details">
+            <h3>Basic Details</h3>
+            <form method="post" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="text" name="city" placeholder="City" required>
+                <input type="text" name="state" placeholder="State" required>
+                <input type="text" name="phone" placeholder="Phone" required>
+                <input type="text" name="country" placeholder="Country" required>
+                <input type="text" name="pin_code" placeholder="Pin Code" required>
+                <button type="submit" class="btn-cod">COD | Place Order</button>
+            </form>
+        </div>
+       
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="product-list">
+                <!-- Product details -->
+                <div class="product-item">
+                    <p>Redmi K20 Pro</p>
+                    <p>Qty: 1</p>
+                    <p>Price: Rs 20999</p>
+                </div>
+                <div class="product-item">
+                    <p>Sport shoes</p>
+                    <p>Qty: 2</p>
+                    <p>Price: Rs 2499</p>
+                </div>
+            </div>
+            <hr>
+            <div class="grand-total">
+                <p>Grand Total: Rs 25997</p>
+            </div>
+            <!-- Mocked Razorpay Button -->
+            <button type="button" class="btn-razorpay" onclick=>Pay with Razorpay</button>
+        </div>
+    </div>
+
+</body>
+</html>
+
+    

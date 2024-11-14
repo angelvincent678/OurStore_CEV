@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            perspective: 1000px; /* Adds perspective for 3D effect */
+        }
+
+        .login-form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Deeper shadow for 3D effect */
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s; /* Smooth transition for hover effect */
+            position: relative;
+            overflow: hidden; /* Contains pseudo-elements for shine */
+        }
+
+        .login-form:hover {
+            transform: translateY(-5px) rotateX(3deg); /* Slight lift and tilt */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+            position: relative; /* Allows for pseudo-element */
+            overflow: hidden; /* Ensures the shine stays within the heading */
+        }
+
+        .login-form h2:before {
+            content: '';
+            position: absolute;
+            top: -50%; /* Start above the text */
+            left: -100%; /* Start from the left */
+            width: 200%; /* Covering double the width for smooth shine */
+            height: 200%; /* Covering double the height for smooth shine */
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)); /* Shine effect */
+            transition: all 0.5s; /* Smooth transition for shine movement */
+            z-index: 0; /* Behind the text */
+        }
+
+        .login-form h2:hover:before {
+            left: 100%; /* Move shine from left to right on hover */
+        }
+
+        .login-form h2 span {
+            position: relative; /* Brings text above the shine */
+            z-index: 1; /* Above the shine effect */
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1), 2px 2px 3px rgba(0, 0, 0, 0.2); /* Creates depth */
+        }
+
+        .login-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-form input {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s; /* Smooth transition for input fields */
+        }
+
+        .login-form input:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Add glow effect on focus */
+        }
+
+        .login-form button {
+            padding: 12px;
+            background-color: crimson;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+            position: relative; /* Position for shine effect */
+            overflow: hidden; /* Contains pseudo-element */
+        }
+
+        .login-form button:before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0)); /* Shine effect */
+            transition: top 0.3s, left 0.3s; /* Smooth transition */
+            z-index: 0; /* Behind button text */
+        }
+
+        .login-form button:hover:before {
+            top: 0;
+            left: 0;
+        }
+
+        .login-form button span {
+            position: relative; /* Bring text above the shine */
+            z-index: 1; /* Above the shine effect */
+        }
+
+        .login-form a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-form a:hover {
+            text-decoration: underline;
+        }
+
+        .login-form .errorlist {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <h2><span>Login</span></h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit"><span>Login</span></button>
+            </form>
+            <a href="{% url 'register' %}">Register here</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,317 @@
+ 
+
+
+{% load static %}
+<!-- templates/adm/product_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <style>
+        /* Table Header Styles */
+        thead {
+            background-color: #ff8c94; /* Peach color for table header */
+            color: rgba(6, 3, 3, 0.832);
+        }
+
+        /* Add some space inside the header cells (th) */
+        th {
+            padding: 15px;  /* Increase padding inside table header cells */
+        }
+
+        /* Add some space inside the regular table cells (td) */
+        td {
+            padding: 15px;  /* Increase padding inside table cells */
+            border: 1px solid #ddd;  /* Optional: Border around each cell for visibility */
+        }
+
+        /* Increase space between cells */
+        table {
+            border-spacing: 10px; /* Add space between table cells */
+            border-collapse: separate;  /* Ensures border-spacing is applied */
+            width: 100%;  /* Optional: Ensures the table takes full width */
+        }
+
+        /* Table Row Hover Effect */
+        tr:hover {
+            background-color: rgba(255, 140, 148, 0.2); /* Light highlight on hover */
+        }
+
+        /* Align the action column (currently commented out) */
+        td:last-child {
+            text-align: center; /* Center align the action buttons */
+        }
+
+        /* Search Bar Styles */
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        .search-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+            margin-right: 10px;
+        }
+
+        .search-btn {
+            padding: 10px 15px;
+            background-color: crimson;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+        }
+
+        .search-btn:hover {
+            background-color: #bc092d; /* Darker on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        /* Cart Button Styles (commented out) */
+        .cart-btn {
+            padding: 8px 12px;
+            background-color: crimson;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+        }
+
+        .cart-btn:hover {
+            background-color: #bc092d; /* Darker on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+    </style>
+</head>
+<body>
+    
+    <h1>Product List</h1>
+
+    <!-- Search Bar -->
+    <form method="GET" action="">
+        <input type="text" class="search-input" name="q" value="{{ query|default_if_none:'' }}" placeholder="Search products...">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <!-- Product Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                {% comment %} <th>Action</th> {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>₹{{ product.price }}</td>
+                    <td>{{ product.quantity }}</td>
+                    {% comment %} <td>
+                       
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" name="quantity" min="1" max="{{product.quantity}}" value="1" style="width: 50px;" required>
+                            <button type="submit" class="cart-btn">Add to Cart</button>
+                        </form>
+                       
+                    </td> {% endcomment %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No products found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} 
+{% comment %} 
+{% extends 'base.html' %}
+
+{% block title %}
+
+{% endblock %} {% endcomment %}
+{% comment %} {% load static %}
+<!-- templates/adm/product_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <style>
+     thead {
+    background-color:#ff8c94; /* Peach #ff8c94 color for table header */
+    color: rgba(6, 3, 3, 0.832);
+}
+    
+
+
+
+
+
+
+
+
+
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Search Bar Styles */
+.search-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    margin-right: 10px;
+}
+
+.search-btn {
+    padding: 10px 15px;
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+
+.search-btn:hover {
+    background-color: #bc092d; /* Darker on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Table Styles */
+
+
+tr:hover {
+    background-color: rgba(255, 140, 148, 0.2); /* Light highlight on hover */
+}
+
+td:last-child {
+    text-align: center; /* Center align the action buttons */
+}
+
+{% comment %} /* Cart Button Styles */
+.cart-btn {
+    padding: 8px 12px;
+    background-color: crimson;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+} 
+
+.cart-btn:hover {
+    background-color: #bc092d; /* Darker on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+
+
+
+
+        
+        
+    </style>
+</head>
+<body>
+    
+    <h1 >Product List</h1>
+
+    <!-- Search Bar -->
+    <form method="GET" action="">
+        <input type="text" class="search-input" name="q" value="{{ query|default_if_none:"" }}" placeholder="Search products...">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <table>
+     
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                 <th>Action</th> 
+            </tr>
+        </thead>
+        <tbody>
+        
+        
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>₹{{ product.price }}</td>
+                    <td>{{ product.quantity }}</td>
+                     <td>
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                            {% csrf_token %}
+                            <label
+                        for="quantity">Quantity:</label>
+                        
+                            <input type="number" name="quantity" min="1" max="{{product.quantity}}" value="1" style="width: 50px;" required>
+                            <button type="submit" class="cart-btn">Add to Cart</button>
+                           
+                        </form> 
+                    </td> 
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No products found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html> 
+ {% comment %} {%endblock %}
+     {% endcomment %}
+
+
+
+
+

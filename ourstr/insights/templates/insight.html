@@ -1,0 +1,508 @@
+ {% extends "basee.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Admin Messages</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="admin-message {% if request.user.is_staff %}highlighted{% endif %}">
+                <strong>{{ message.content }}</strong><br>
+                <small style="color: #666; font-size: 0.8em;">Posted by Admin at: {{ message.created_at|date:"M. d, Y, g:i a" }}</small><br>
+
+                <!-- Show reactions if mode is like/dislike -->
+                {% if message.reaction_mode == 'like_dislike' %}
+                    <div class="reaction-container">
+                        <form method="post" class="reaction-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="message_id" value="{{ message.id }}">
+                            <button type="submit" name="reaction_type" value="like">
+                                Like ({{ message.likes }})
+                            </button>
+                            <button type="submit" name="reaction_type" value="dislike">
+                                Dislike ({{ message.dislikes }})
+                            </button>
+                        </form>
+                    </div>
+                {% elif message.reaction_mode == 'text' %}
+                    <!-- Display comment form only for text-based suggestions -->
+                    <form method="post" class="comment-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="message_id" value="{{ message.id }}">
+                        <textarea name="comment" placeholder="Add a comment..." required></textarea>
+                        <button type="submit">Comment</button>
+                    </form>
+                {% endif %}
+
+                <!-- Only show comments if the reaction mode is not "like/dislike" -->
+                {% if message.reaction_mode != 'like_dislike' %}
+                    <div class="comments">
+                        <h4>Comments:</h4>
+                        {% for comment in message.comments.all %}
+                            <div class="comment">
+                                <strong>{{ comment.user.username }}</strong>: {{ comment.content }} <br>
+                                <small class="comment-timestamp">{{ comment.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+                            </div>
+                        {% empty %}
+                            <p>No comments yet.</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="color: #777; font-style: italic;">
+            No current chat messages from admin. Please check back later.
+        </div>
+    {% endif %}
+</div> 
+
+
+
+<style>
+    body {
+        background-color: #fff3e6; /* Light peach background */
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 30px auto; /* Center the container */
+        padding: 20px;
+        background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Gradient for depth */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    .admin-message {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px; /* Increased padding for better spacing */
+        margin-bottom: 20px;
+        background-color: #f9f9f9; /* Light gray background for admin messages */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 3D shadow effect */
+        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+        font-size: 1.2em; /* Increased font size */
+        color: #333; /* Dark text color for better readability */
+    }
+
+    .highlighted {
+        background-color: #fff4cc; /* Light yellow background for highlighted admin messages */
+        border: 2px solid #ffcc00; /* Border color to make it pop */
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.6); /* Glow effect around the admin message */
+    }
+
+    .admin-message:hover {
+        transform: translateY(-4px) scale(1.02); /* Lift effect and slight scale on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+    }
+
+    .reaction-container {
+        padding-top: 30px; /* Increased padding between message and buttons */
+    }
+
+    .reaction-form button {
+        background-color: #6ec1e4; /* Light blue background */
+        color: white; /* White text */
+        border: none; /* Remove border */
+        padding: 10px 15px; /* Padding for the button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .reaction-form button:hover {
+        background-color: #58a3b7; /* Slightly darker blue on hover */
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+
+    .reaction-form button.liked {
+        background-color: #4CAF50; /* Green when liked */
+        border-color: #4CAF50;
+        box-shadow: 0px 4px 8px rgba(0, 128, 0, 0.3); /* Green shadow for 3D effect */
+        transform: translateY(-2px); /* Slight 3D effect */
+    }
+
+    .reaction-form button.disliked {
+        background-color: #f44336; /* Red when disliked */
+        border-color: #f44336;
+        box-shadow: 0px 4px 8px rgba(255, 0, 0, 0.3); /* Red shadow for 3D effect */
+        transform: translateY(-2px); /* Slight 3D effect */
+    }
+
+    .reaction-form button.liked:hover,
+    .reaction-form button.disliked:hover {
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Slightly darker shadow on hover */
+        transform: translateY(-4px); /* Lift more on hover */
+    }
+
+    .comment-form {
+        margin-top: 20px;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    .comment-form button {
+        background-color: #6ec1e4; /* Light blue background */
+        color: white; /* White text */
+        border: none; /* Remove border */
+        padding: 10px 15px; /* Padding for the button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .comment-form button:hover {
+        background-color: #58a3b7; /* Slightly darker blue on hover */
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+
+    .comments {
+        margin-top: 20px;
+    }
+
+    .comment {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .comment-timestamp {
+        font-size: 0.8em;
+        color: #999;
+    }
+
+    h4 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    /* Custom Message Styles */
+    .message-box {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 2px solid #eee;
+    }
+</style>
+
+{% endblock %}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ {% comment %} {% extends "basee.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Admin Messages</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="admin-message {% if request.user.is_staff %}highlighted{% endif %}">
+                <strong>{{ message.content }}</strong><br>
+                <small style="color: #666; font-size: 0.8em;">Posted by Admin at: {{ message.created_at|date:"M. d, Y, g:i a" }}</small><br>
+
+                <!-- Show reactions if mode is like/dislike -->
+                {% if message.reaction_mode == 'like_dislike' %}
+                    <div class="reaction-container">
+                        <form method="post" class="reaction-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="message_id" value="{{ message.id }}">
+                            <button type="submit" name="reaction_type" value="like">
+                                Like ({{ message.likes }})
+                            </button>
+                            <button type="submit" name="reaction_type" value="dislike">
+                                Dislike ({{ message.dislikes }})
+                            </button>
+                        </form>
+                    </div>
+                {% elif message.reaction_mode == 'text' %}
+                    <!-- Display comment form only for text-based suggestions -->
+                    <form method="post" class="comment-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="message_id" value="{{ message.id }}">
+                        <textarea name="comment" placeholder="Add a comment..." required></textarea>
+                        <button type="submit">Comment</button>
+                    </form>
+                {% endif %}
+
+                <!-- Only show comments if the reaction mode is not "like/dislike" -->
+                {% if message.reaction_mode != 'like_dislike' %}
+                    <div class="comments">
+                        <h4>Comments:</h4>
+                        {% for comment in message.comments.all %}
+                            <div class="comment">
+                                <strong>{{ comment.user.username }}</strong>: {{ comment.content }} <br>
+                                <small class="comment-timestamp">{{ comment.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+                            </div>
+                        {% empty %}
+                            <p>No comments yet.</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="color: #777; font-style: italic;">
+            No current chat messages from admin. Please check back later.
+        </div>
+    {% endif %}
+</div> 
+
+<style>
+    body {
+        background-color: #fff3e6; /* Light peach background */
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 30px auto; /* Center the container */
+        padding: 20px;
+        background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Gradient for depth */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    .admin-message {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px; /* Increased padding for better spacing */
+        margin-bottom: 20px;
+        background-color: #f9f9f9; /* Light gray background for admin messages */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 3D shadow effect */
+        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+        font-size: 1.2em; /* Increased font size */
+        color: #333; /* Dark text color for better readability */
+    }
+
+    .highlighted {
+        background-color: #fff4cc; /* Light yellow background for highlighted admin messages */
+        border: 2px solid #ffcc00; /* Border color to make it pop */
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.6); /* Glow effect around the admin message */
+    }
+
+    .admin-message:hover {
+        transform: translateY(-4px) scale(1.02); /* Lift effect and slight scale on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+    }
+
+    .reaction-container {
+        padding-top: 30px; /* Increased padding between message and buttons */
+    }
+
+    .reaction-form button {
+        background-color: #6ec1e4; /* Light blue background */
+        color: white; /* White text */
+        border: none; /* Remove border */
+        padding: 10px 15px; /* Padding for the button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .reaction-form button:hover {
+        background-color: #58a3b7; /* Slightly darker blue on hover */
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+
+    .comment-form {
+        margin-top: 20px;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    .comment-form button {
+        background-color: #6ec1e4; /* Light blue background */
+        color: white; /* White text */
+        border: none; /* Remove border */
+        padding: 10px 15px; /* Padding for the button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .comment-form button:hover {
+        background-color: #58a3b7; /* Slightly darker blue on hover */
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+
+    .comments {
+        margin-top: 20px;
+    }
+
+    .comment {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .comment-timestamp {
+        font-size: 0.8em;
+        color: #999;
+    }
+
+    h4 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+</style>
+
+{% endblock %} {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %}  *1 {% extends "basee.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Admin Messages</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="admin-message {% if request.user.is_staff %}highlighted{% endif %}">
+                <strong>{{ message.content }}</strong><br>
+                <small style="color: #666; font-size: 0.8em;">Posted by Admin at: {{ message.created_at|date:"M. d, Y, g:i a" }}</small><br>
+
+                <!-- Show reactions if mode is like/dislike -->
+                {% if message.reaction_mode == 'like_dislike' %}
+                    <div class="reaction-container">
+                        <form method="post" class="reaction-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="message_id" value="{{ message.id }}">
+                            <button type="submit" name="reaction_type" value="like">Like ({{ message.likes }})</button>
+                            <button type="submit" name="reaction_type" value="dislike">Dislike ({{ message.dislikes }})</button>
+                        </form>
+                    </div>
+                {% elif message.reaction_mode == 'text' %}
+                    <!-- Display only the comment form for text suggestion mode -->
+                    <form method="post" class="comment-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="message_id" value="{{ message.id }}">
+                        <textarea name="comment" placeholder="Add a comment..." required></textarea>
+                        <button type="submit">Comment</button>
+                    </form>
+                {% endif %}
+
+                <!-- Only show comments if the reaction mode is not "like/dislike" -->
+                {% if message.reaction_mode != 'like_dislike' %}
+                    <div class="comments">
+                        <h4>Comments:</h4>
+                        {% for comment in message.comments.all %}
+                            <div class="comment">
+                                <strong>{{ comment.user.username }}</strong>: {{ comment.content }} <br>
+                                <small class="comment-timestamp">{{ comment.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+                            </div>
+                        {% empty %}
+                            <p>No comments yet.</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="color: #777; font-style: italic;">
+            No current chat messages from admin. Please check back later.
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    body {
+        background-color: #fff3e6; /* Light peach background */
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 30px auto; /* Center the container */
+        padding: 20px;
+        background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Gradient for depth */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    .admin-message {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px; /* Increased padding for better spacing */
+        margin-bottom: 20px;
+        background-color: #f9f9f9; /* Light gray background for admin messages */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 3D shadow effect */
+        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+        font-size: 1.2em; /* Increased font size */
+        color: #333366; /* Dark blue color for admin message text */
+    }
+
+    .highlighted {
+        background-color: #fff4cc; /* Light yellow background for highlighted admin messages */
+        border: 2px solid #ffcc00; /* Border color to make it pop */
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.6); /* Glow effect around the admin message */
+    }
+
+    .admin-message:hover {
+        transform: translateY(-4px) scale(1.02); /* Lift effect and slight scale on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+    }
+
+    .reaction-container {
+        padding-top: 30px; /* Increased padding between message and buttons */
+    }
+
+    .comment {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Decrease font size of the username inside the comment */
+    .comment strong {
+        font-size: 0.9em; /* Decreased font size */
+        color: #555; /* A bit lighter color for the username */
+    }
+
+    .comment-form button, .reaction-form button {
+        background-color: #6ec1e4; /* Light blue background */
+        color: white; /* White text */
+        border: none; /* Remove border */
+        padding: 10px 15px; /* Padding for the button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .comment-form button:hover, .reaction-form button:hover {
+        background-color: #58a3b7; /* Slightly darker blue on hover */
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+</style>
+
+{% endblock %}
+ {% endcomment %}
+
+
